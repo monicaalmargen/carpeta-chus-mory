@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "bb1f7f4e-c45b-4269-a27f-b607ad63f808",
+		"name": "chus mory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39859492"
+	},
+	"item": [
+		{
+			"name": "chiste aleatorio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.sendRequest({\r",
+							"    url: 'https://api.chucknorris.io/jokes/random',\r",
+							"    method: 'GET',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    timeout: 1000\r",
+							"}, function (err, res) {\r",
+							"    pm.test(\"Status code is 200 for simultaneous request\", function () {\r",
+							"        pm.expect(res).to.have.status(200);\r",
+							"    });\r",
+							"    pm.test(\"Response time is less than 500ms for simultaneous request\", function () {\r",
+							"        pm.expect(res.responseTime).to.be.lessThan(500);\r",
+							"    });\r",
+							"});pm.test(\"Response body has icon_url\", function () {\r",
+							"    pm.expect(pm.response.json().icon_url).to.be.a('string');\r",
+							"});pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.lessThan(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body has categories\", function () {\r",
+							"    pm.expect(pm.response.json().categories).to.be.an('array');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/random",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lista de categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/categories",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "busqueda de texto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response body should be in JSON format\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"pm.test(\"Response status code should be 400 for incorrect or invalid parameters\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Response body should be in JSON format\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/search?query={query}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "{query}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chiste aleatirio de una categoria determinada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is not empty\", function () {\r",
+							"    pm.expect(pm.response.text()).not.eql(\"\");\r",
+							"});\r",
+							"pm.test(\"Query parameter is working correctly\", function () {\r",
+							"    pm.expect(pm.request.url.query.all()).to.include(\"category={category}\");\r",
+							"});\r",
+							"pm.test(\"Verify response body structure\", function () {\r",
+							"    pm.response.to.have.jsonBody();\r",
+							"    pm.response.to.have.jsonBody('value');\r",
+							"    pm.response.to.have.jsonBody('icon_url');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('url');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/random?category={category}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"random"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "{category}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
